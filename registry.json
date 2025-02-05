@@ -1,7 +1,7 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry.json",
-  "name": "acme",
-  "homepage": "https://acme.com",
+  "name": "next-form-handler",
+  "homepage": "https://github.com/Tayeq/next-form-handler",
   "items": [
     {
       "name": "form-wrapper",
@@ -18,7 +18,7 @@
       ],
       "files": [
         {
-          "path": "./src/components/form-wrapper.tsx",
+          "path": "./registry/components/form-wrapper.tsx",
           "type": "registry:component"
         }
       ]
