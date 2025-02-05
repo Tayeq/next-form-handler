@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "form-wrapper",
+  "type": "registry:component",
+  "title": "Form Wrapper",
+  "description": "A form wrapper component",
+  "dependencies": [
+    "react",
+    "react-hook-form",
+    "next-form-handler"
+  ],
+  "registryDependencies": [
+    "form"
+  ],
+  "files": [
+    {
+      "path": "./src/components/form-wrapper.tsx",
+      "content": "'use client';\n\nimport type {PropsWithChildren, ReactElement} from 'react';\nimport type { FieldValues, UseFormReturn } from 'react-hook-form';\nimport { Form } from '@/componencts/ui/form';\nimport { createSubmitHandler, useFormHandler, type FormAction } from 'next-form-handler';\n\nexport interface FormWrapperProps<T extends FieldValues> extends PropsWithChildren{\n    action: FormAction<T>;\n    form: UseFormReturn<T>;\n    onSuccess?: () => void;\n}\n\nexport function FormWrapper<T extends FieldValues>({\n                                                       action,\n                                                       form,\n                                                       children,\n                                                       onSuccess: onBaseSuccess,\n                                                   }: FormWrapperProps<T>): ReactElement {\n    const onSuccess = (data: T) => {\n        form.reset(data);\n        onBaseSuccess?.();\n    };\n\n    const { formAction } = useFormHandler(action, onSuccess);\n\n    const onSubmit = form.handleSubmit(createSubmitHandler(formAction));\n\n    return (\n        <Form {...form}>\n            <form onSubmit={onSubmit}>{children}</form>\n        </Form>\n    );\n}\n",
+      "type": "registry:component"
+    }
+  ]
+}

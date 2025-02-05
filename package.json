@@ -1,18 +1,20 @@
 {
   "name": "react-form-handler",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "registry:build": "shadcn build"
   },
   "dependencies": {
     "react": "^19"
   },
   "devDependencies": {
     "@types/react": "^19",
-    "typescript": "^5"
+    "typescript": "^5",
+    "shadcn": "^2.3.0"
   },
   "private": true
 }
