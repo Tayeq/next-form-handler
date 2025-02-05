@@ -11,17 +11,18 @@ const useFormHandler = (action, onSuccess, onError) => {
         success: false,
     });
     (0, react_1.useEffect)(() => {
-        var _a;
-        if (formState.message) {
-            if (formState.success) {
-                onSuccess === null || onSuccess === void 0 ? void 0 : onSuccess((_a = formState.data) !== null && _a !== void 0 ? _a : {});
-            }
-            else {
-                onError === null || onError === void 0 ? void 0 : onError(new Error(formState.message));
-            }
+        if (formState.success) {
+            onSuccess === null || onSuccess === void 0 ? void 0 : onSuccess(formState);
+        }
+        else {
+            onError === null || onError === void 0 ? void 0 : onError(formState);
         }
     }, [formState]);
-    return Object.assign({ formAction, isPending: (0, react_1.useMemo)(() => isProcessing, [isProcessing]) }, formState);
+    return {
+        formAction,
+        isPending: (0, react_1.useMemo)(() => isProcessing, [isProcessing]),
+        state: formState,
+    };
 };
 exports.useFormHandler = useFormHandler;
 function mapToFormData(data) {
