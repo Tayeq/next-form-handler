@@ -2,7 +2,7 @@
   "lockfileVersion": 1,
   "workspaces": {
     "": {
-      "name": "react-form-handler",
+      "name": "next-form-handler",
       "dependencies": {
         "react": "^19",
       },
