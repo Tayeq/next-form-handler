@@ -1,17 +1,18 @@
 'use client';
 
 import { startTransition, useActionState, useEffect, useMemo } from 'react';
-import {FormAction, FormState} from "./types";
+import {FormAction, FormErrorState, FormState, FormSuccessState} from "./types";
 
-type UseFormHandlerReturn<T = unknown> = FormState<T> & {
+type UseFormHandlerReturn<T = unknown> =  {
     formAction: (payload: FormData) => void;
     isPending: boolean;
+    state: FormState<T>;
 }
 
 export const useFormHandler = <T = unknown>(
     action: FormAction<T>,
-    onSuccess?: (data: T) => void,
-    onError?: (error: Error) => void
+    onSuccess?: (state: FormSuccessState<T>) => void,
+    onError?: (state: FormErrorState) => void
 ): UseFormHandlerReturn<T> => {
     const actionWithTimestamp: FormAction<T> = async (state, formData) => ({
         ...(await action(state, formData)),
@@ -23,19 +24,17 @@ export const useFormHandler = <T = unknown>(
     } as FormState<T>);
 
     useEffect(() => {
-        if (formState.message) {
-            if (formState.success) {
-                onSuccess?.(formState.data ?? ({} as T));
-            } else {
-                onError?.(new Error(formState.message));
-            }
+        if(formState.success) {
+            onSuccess?.(formState);
+        } else {
+            onError?.(formState);
         }
     }, [formState]);
 
     return {
         formAction,
         isPending: useMemo(() => isProcessing, [isProcessing]),
-        ...formState,
+        state: formState,
     };
 };
 
