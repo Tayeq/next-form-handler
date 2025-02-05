@@ -1,4 +1,5 @@
-import { startTransition, useActionState, useEffect, useMemo } from 'react';
+import {startTransition, useActionState, useEffect, useMemo} from 'react';
+import {type ZodIssue} from 'zod'
 
 export interface FormSuccessState<T = unknown> {
     success: true;
@@ -9,7 +10,7 @@ export interface FormSuccessState<T = unknown> {
 export interface FormErrorState {
     success: false;
     error: string
-    errors?: string[];
+    validationErrors?: ZodIssue[] | Record<string, string | string[]>;
 }
 
 export type FormState<T = unknown> = (FormSuccessState<T> | FormErrorState);
@@ -20,7 +21,7 @@ export type FormAction<T = unknown> = (
 ) => Promise<FormState<T>>;
 
 
-export type UseFormHandlerReturn<T = unknown> =  {
+export type UseFormHandlerReturn<T = unknown> = {
     formAction: (payload: FormData) => void;
     isPending: boolean;
     state: FormState<T>;
@@ -41,7 +42,7 @@ export const useFormHandler = <T = unknown>(
     } as FormState<T>);
 
     useEffect(() => {
-        if(formState.success) {
+        if (formState.success) {
             onSuccess?.(formState);
         } else {
             onError?.(formState);

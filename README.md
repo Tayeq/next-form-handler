@@ -60,7 +60,7 @@ export default function Form() {
     const { handleSubmit, register } = useForm({
         resolver: zodResolver(schema),
     });
-    
+
     const onSubmit = handleSubmit(createSubmitHandler(formAction));
 
     return (
@@ -88,6 +88,92 @@ This will add the **FormWrapper** component, which integrates seamlessly with **
 
 ---
 
+## 🔥 Example Usage
+
+### `form.tsx`
+```tsx
+'use client'
+
+import {submitForm} from "./actions";
+import {useForm} from "react-hook-form";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {z} from "zod";
+import {FormWrapper, useFormWrapper} from "@/components/form-wrapper";
+import {FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
+import {Input} from "@/components/ui/input";
+import {Button} from "@/components/ui/button";
+
+const schema = z.object({
+    name: z.string().min(3).max(255)
+})
+
+export default function Form() {
+    const form = useForm({
+        resolver: zodResolver(schema),
+        defaultValues: {
+            name: ''
+        }
+    })
+    return (
+        <FormWrapper action={submitForm} form={form} onSuccess={({data}) => {
+            {
+                form.reset(data)
+                console.log(data)
+            }
+        }}>
+            <FormField name={'name'} render={({field}) => (
+                <FormItem>
+                    <FormLabel>Name</FormLabel>
+                    <FormControl>
+                        <Input {...field}/>
+                    </FormControl>
+                    <FormMessage/>
+                </FormItem>
+            )}/>
+            <SubmitButton/>
+        </FormWrapper>
+    )
+}
+
+const SubmitButton = () => {
+    const {isPending} = useFormWrapper();
+    return (
+        <Button disabled={isPending} type={'submit'}>{isPending ? 'Loading' : 'Submit'}</Button>
+    )
+}
+```
+
+### `actions.ts`
+```tsx
+'use server'
+
+import {FormAction} from "next-form-handler";
+
+export const submitForm: FormAction<{
+    name: string,
+}> = async (state, formData) => {
+    if(Math.random() > 0.5){
+        return {
+            success: false,
+            error: 'Failed to submit form'
+        }
+    }
+
+    const name = formData.get('name') as string;
+    const upperCaseName = name.toUpperCase();
+
+    return {
+        success: true,
+        message: 'Form submitted successfully',
+        data: {
+            name: upperCaseName
+        }
+    }
+}
+```
+
+---
+
 ## 🛠 Features
 ✔️ **Handles form state** (success, error, validation)  
 ✔️ **Works with server actions** in Next.js  
@@ -100,4 +186,3 @@ This will add the **FormWrapper** component, which integrates seamlessly with **
 ## 📜 License
 MIT
 
----
