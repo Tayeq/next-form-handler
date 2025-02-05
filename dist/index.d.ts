@@ -7,7 +7,7 @@ export interface FormSuccessState<T = unknown> {
 export interface FormErrorState {
     success: false;
     error: string;
-    validationErrors?: ZodIssue[] | Record<string, string | string[]>;
+    validationErrors?: ZodIssue[];
 }
 export type FormState<T = unknown> = (FormSuccessState<T> | FormErrorState);
 export type FormAction<T = unknown> = (state: FormState<T>, formData: FormData) => Promise<FormState<T>>;
