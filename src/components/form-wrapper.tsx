@@ -1,9 +1,9 @@
 'use client';
 
-import type {PropsWithChildren, ReactElement} from 'react';
-import type { FieldValues, UseFormReturn } from 'react-hook-form';
-import { Form } from '@/componencts/ui/form';
-import { createSubmitHandler, useFormHandler, type FormAction } from 'next-form-handler';
+import type {PropsWithChildren, ReactElement} from "react";
+import type { FieldValues, UseFormReturn } from "react-hook-form";
+import { Form } from "@/components/ui/form";
+import { createSubmitHandler, useFormHandler, type FormAction } from "next-form-handler";
 
 export interface FormWrapperProps<T extends FieldValues> extends PropsWithChildren{
     action: FormAction<T>;
