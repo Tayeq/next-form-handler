@@ -7,11 +7,11 @@
   "dependencies": [
     "react@19",
     "react-hook-form",
-    "next-form-handler"
+    "next-form-handler",
+    "sonner"
   ],
   "registryDependencies": [
-    "form",
-    "sonner"
+    "form"
   ],
   "files": [
     {
