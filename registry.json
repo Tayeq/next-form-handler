@@ -9,12 +9,12 @@
       "title": "Form Wrapper",
       "description": "A form wrapper component",
       "dependencies": [
-        "react",
+        "react@19",
         "react-hook-form",
         "next-form-handler"
       ],
       "registryDependencies": [
-        "form"
+        "form", "sonner"
       ],
       "files": [
         {

@@ -5,17 +5,18 @@
   "title": "Form Wrapper",
   "description": "A form wrapper component",
   "dependencies": [
-    "react",
+    "react@19",
     "react-hook-form",
     "next-form-handler"
   ],
   "registryDependencies": [
-    "form"
+    "form",
+    "sonner"
   ],
   "files": [
     {
       "path": "./registry/components/form-wrapper.tsx",
-      "content": "\"use client\";\n\nimport type {PropsWithChildren, ReactElement} from \"react\";\nimport type { FieldValues, UseFormReturn } from \"react-hook-form\";\nimport { Form } from \"@/components/ui/form\";\nimport { createSubmitHandler, useFormHandler, type FormAction } from \"next-form-handler\";\n\nexport interface FormWrapperProps<T extends FieldValues> extends PropsWithChildren{\n    action: FormAction<T>;\n    form: UseFormReturn<T>;\n    onSuccess?: () => void;\n}\n\nexport function FormWrapper<T extends FieldValues>({\n                                                       action,\n                                                       form,\n                                                       children,\n                                                       onSuccess: onBaseSuccess,\n                                                   }: FormWrapperProps<T>): ReactElement {\n    const onSuccess = (data: T) => {\n        form.reset(data);\n        onBaseSuccess?.();\n    };\n\n    const { formAction } = useFormHandler(action, onSuccess);\n\n    const onSubmit = form.handleSubmit(createSubmitHandler(formAction));\n\n    return (\n        <Form {...form}>\n            <form onSubmit={onSubmit}>{children}</form>\n        </Form>\n    );\n}\n",
+      "content": "\"use client\";\n\nimport {createContext, PropsWithChildren, ReactElement, useContext} from \"react\";\nimport type {FieldValues, UseFormReturn} from \"react-hook-form\";\nimport {Form} from \"@/components/ui/form\";\nimport {toast} from \"sonner\"\nimport {\n    createSubmitHandler,\n    type FormAction,\n    FormErrorState,\n    FormSuccessState,\n    useFormHandler,\n    UseFormHandlerReturn,\n} from \"next-form-handler\";\n\nexport interface FormWrapperProps<TData, TFieldValues extends FieldValues> extends PropsWithChildren {\n    action: FormAction<TData>;\n    form: UseFormReturn<TFieldValues>;\n    onSuccess?: (state: FormSuccessState<TData>) => void;\n    onError?: (state: FormErrorState) => void;\n}\n\nconst FormWrapperContext = createContext<UseFormHandlerReturn>({} as UseFormHandlerReturn);\n\nexport function FormWrapper<TData, TFieldValues extends FieldValues>({\n                                                                         action,\n                                                                         form,\n                                                                         children,\n                                                                         onSuccess,\n                                                                         onError\n                                                                     }: FormWrapperProps<TData, TFieldValues>): ReactElement {\n\n    const formHandler = useFormHandler<TData>(action, (state) => {\n        onSuccess?.(state);\n        if (state.message) {\n            toast.success(state.message);\n        }\n    }, (state) => {\n        onError?.(state);\n        toast.error(state.error);\n    });\n    const onSubmit = form.handleSubmit(createSubmitHandler(formHandler.formAction));\n\n    return (\n        <FormWrapperContext.Provider value={formHandler}>\n            <Form {...form}>\n                <form onSubmit={onSubmit}>{children}</form>\n            </Form>\n        </FormWrapperContext.Provider>\n    );\n}\n\nexport function useFormWrapper() {\n    return useContext(FormWrapperContext);\n}\n",
       "type": "registry:component"
     }
   ]
