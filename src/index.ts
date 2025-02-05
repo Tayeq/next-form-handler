@@ -58,10 +58,10 @@ export function mapToFormData(data: Record<string, unknown>): FormData {
     return formData;
 }
 
-export function createSubmitHandler<T extends ZodSchema>(
+export function createSubmitHandler(
     formAction: (formData: FormData) => void,
-): (data: z.infer<T>) => void {
-    return (data: z.infer<T>) => {
+): (data: Record<string, unknown>) => void {
+    return (data: Record<string, unknown>) => {
         const formData = mapToFormData(data);
         startTransition(() => {
             formAction(formData);
