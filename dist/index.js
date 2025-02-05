@@ -1,5 +1,4 @@
 "use strict";
-'use client';
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.useFormHandler = void 0;
 exports.mapToFormData = mapToFormData;
