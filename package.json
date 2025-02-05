@@ -13,8 +13,10 @@
   },
   "devDependencies": {
     "@types/react": "^19",
-    "typescript": "^5",
-    "shadcn": "^2.3.0"
+    "husky": "^9.1.7",
+    "lint-staged": "^15.4.3",
+    "shadcn": "^2.3.0",
+    "typescript": "^5"
   },
   "private": true
 }
