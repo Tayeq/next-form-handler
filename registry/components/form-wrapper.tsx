@@ -1,7 +1,7 @@
 "use client";
 
 import {createContext, PropsWithChildren, ReactElement, useContext} from "react";
-import type {FieldValues, UseFormReturn} from "react-hook-form";
+import type {FieldValues, Path, UseFormReturn} from "react-hook-form";
 import {Form} from "@/components/ui/form";
 import {toast} from "sonner"
 import {
@@ -38,6 +38,14 @@ export function FormWrapper<TData, TFieldValues extends FieldValues>({
     }, (state) => {
         onError?.(state);
         toast.error(state.error);
+        if (state.validationErrors) {
+            state.validationErrors.forEach((error) => {
+                const path: Path<TFieldValues> = error.path.join(".") as Path<TFieldValues>;
+                form.setError(path, {
+                    message: error.message,
+                });
+            });
+        }
     });
     const onSubmit = form.handleSubmit(createSubmitHandler(formHandler.formAction));
 
