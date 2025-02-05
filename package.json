@@ -17,6 +17,5 @@
     "lint-staged": "^15.4.3",
     "shadcn": "^2.3.0",
     "typescript": "^5"
-  },
-  "private": true
+  }
 }
