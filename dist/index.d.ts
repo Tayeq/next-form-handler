@@ -9,7 +9,9 @@ export interface FormErrorState {
     error: string;
     validationErrors?: ZodIssue[];
 }
-export type FormState<T = unknown> = (FormSuccessState<T> | FormErrorState);
+export type FormState<T = unknown> = (FormSuccessState<T> | FormErrorState) & {
+    timestamp?: number;
+};
 export type FormAction<T = unknown> = (state: FormState<T>, formData: FormData) => Promise<FormState<T>>;
 export type UseFormHandlerReturn<T = unknown> = {
     formAction: (payload: FormData) => void;

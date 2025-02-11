@@ -13,7 +13,9 @@ export interface FormErrorState {
     validationErrors?: ZodIssue[];
 }
 
-export type FormState<T = unknown> = (FormSuccessState<T> | FormErrorState);
+export type FormState<T = unknown> = (FormSuccessState<T> | FormErrorState) & {
+    timestamp?: number;
+};
 
 export type FormAction<T = unknown> = (
     state: FormState<T>,
@@ -42,6 +44,7 @@ export const useFormHandler = <T = unknown>(
     } as FormState<T>);
 
     useEffect(() => {
+        if (!formState?.timestamp)  return;
         if (formState.success) {
             onSuccess?.(formState);
         } else {

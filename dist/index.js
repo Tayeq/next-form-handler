@@ -10,6 +10,8 @@ const useFormHandler = (action, onSuccess, onError) => {
         success: false,
     });
     (0, react_1.useEffect)(() => {
+        if (!(formState === null || formState === void 0 ? void 0 : formState.timestamp))
+            return;
         if (formState.success) {
             onSuccess === null || onSuccess === void 0 ? void 0 : onSuccess(formState);
         }
